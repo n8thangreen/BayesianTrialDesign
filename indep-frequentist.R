@@ -1,5 +1,6 @@
 
 # Bayesian trial design 
+# independent frequentist
 # by Hakim Dehbi
 
 
