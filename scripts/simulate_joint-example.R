@@ -2,7 +2,7 @@
 
 list(p_control = 0.5,
      # p_treatment = 0.5,
-     odd_ratio = 1,
+     odds_ratio = 1,
      prob_accept_ha = 0.95,
      total_sample_size = 20,
      randomisation_ratio = 2,
