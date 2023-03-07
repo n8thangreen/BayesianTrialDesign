@@ -41,9 +41,11 @@ simulate_joint <- function(input, no_of_sim = 1000) {
 #'   simulate_joint(no_of_sim = 1000)
 #' 
 simulate_joint_ <- function(p_control = 0.5,
-                            p_treatment = 0.65,
+                            p_treatment = NA,
+                            odds_ratio = NA,
                             prob_accept_ha = 0.95,
                             total_sample_size = 20,
+                            randomisation_ratio = 1,
                             no_of_sim = 100,
                             alternative = "greater",
                             prior_p_control = beta_prior(1,1),
@@ -53,6 +55,9 @@ simulate_joint_ <- function(p_control = 0.5,
                             n_thin = 2e1) {
   
   alt <- if (alternative == "greater") {1} else {-1}
+  
+  if (is.na(p_treatment))
+    p_treatment <- boot::inv.logit(log(odds_ratio) + boot::logit(p_control))
   
   # number of successes
   z1 <- rbinom(n = no_of_sim, size = total_sample_size, prob = p_control)
@@ -64,11 +69,13 @@ simulate_joint_ <- function(p_control = 0.5,
   rstan::rstan_options(auto_write = TRUE)
   options(mc.cores = parallel::detectCores())
   
+  rand_prop <- randomisation_ratio/(randomisation_ratio + 1)
+  
   dat_input <-
     list(
       nsim = no_of_sim,
       narms = 2,
-      N = c(total_sample_size, total_sample_size),
+      N = c(rand_prop*total_sample_size, (1 - rand_prop)*total_sample_size),
       z = cbind(z1, z2),
       a = prior_p_control$a,
       b = prior_p_control$b,
