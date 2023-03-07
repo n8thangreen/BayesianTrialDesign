@@ -1,12 +1,16 @@
 
 #'
-normal <- function(mu = 1, sigma = 1, .data = NULL) 
-  .data$prior <- c(mu, sigma)
+normal_distn <- function(mu = 1, sigma = 1, .data = NULL) 
+  .data$prior <- tibble::lst(mu, sigma)
+
+#'
+beta_distn <- function(a = 1, b = 1, .data = NULL) 
+  .data$prior <- tibble::lst(a, b)
 
 
 #'
 simulate_joint <- function(input, no_of_sim = 1000) {
-  do.call(simulate_joint_, c(dat, no_of_sim))
+  do.call(simulate_joint_, c(input, no_of_sim))
 }
 
 
@@ -42,8 +46,8 @@ simulate_joint_ <- function(p_control = 0.5,
                             total_sample_size = 20,
                             no_of_sim = 100,
                             alternative = "greater",
-                            prior_p_control = beta(1,1),
-                            prior_log_odds_ratio = normal(0,1),
+                            prior_p_control = beta_prior(1,1),
+                            prior_log_odds_ratio = normal_prior(0,1),
                             n_iter = 1e3,
                             n_burnin = 3e1,
                             n_thin = 2e1) {
@@ -57,7 +61,7 @@ simulate_joint_ <- function(p_control = 0.5,
   ##########
   # Stan
   
-  rstan_options(auto_write = TRUE)
+  rstan::rstan_options(auto_write = TRUE)
   options(mc.cores = parallel::detectCores())
   
   dat_input <-
@@ -76,17 +80,18 @@ simulate_joint_ <- function(p_control = 0.5,
   ##############
   # run MCMC
   
-  out <- stan(data = dat_input,
-              pars = params,
-              file = here::here("stan", "correlated-p.stan"),
-              chains = 1,
-              iter = n_iter,
-              warmup = n_burnin,
-              thin = n_thin,
-              control = list(adapt_delta = 0.99,
-                             max_treedepth = 20))
+  out <- rstan::stan(
+    data = dat_input,
+    pars = params,
+    file = here::here("stan", "correlated-p.stan"),
+    chains = 1,
+    iter = n_iter,
+    warmup = n_burnin,
+    thin = n_thin,
+    control = list(adapt_delta = 0.99,
+                   max_treedepth = 20))
   
-  stan_output <- extract(out)
+  stan_output <- rstan::extract(out)
   
   save(stan_output, file = here::here("data", "stan_output_correlated.RData"))
   
