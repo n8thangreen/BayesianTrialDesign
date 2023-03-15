@@ -1,14 +1,17 @@
 
 #'
+#' @export
 normal_distn <- function(mu = 1, sigma = 1, .data = NULL) 
   .data$prior <- tibble::lst(mu, sigma)
 
 #'
+#' @export
 beta_distn <- function(a = 1, b = 1, .data = NULL) 
   .data$prior <- tibble::lst(a, b)
 
 
 #'
+#' @export
 simulate_joint <- function(input, no_of_sim = 1000) {
   do.call(simulate_joint_, c(input, no_of_sim))
 }
@@ -39,6 +42,7 @@ simulate_joint <- function(input, no_of_sim = 1000) {
 #'      prior_p_control = beta(1,1),
 #'      prior_log_odds_ratio = normal(0,1)) |> 
 #'   simulate_joint(no_of_sim = 1000)
+#' @export
 #' 
 simulate_joint_ <- function(p_control = 0.5,
                             p_treatment = NA,
