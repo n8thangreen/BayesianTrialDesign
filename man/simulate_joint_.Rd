@@ -13,8 +13,8 @@ simulate_joint_(
   randomisation_ratio = 1,
   no_of_sim = 100,
   alternative = "greater",
-  prior_p_control = beta_prior(1, 1),
-  prior_log_odds_ratio = normal_prior(0, 1),
+  prior_p_control = beta_distn(1, 1),
+  prior_log_odds_ratio = normal_distn(0, 1),
   n_iter = 1000,
   n_burnin = 30,
   n_thin = 20
@@ -54,7 +54,7 @@ list(p_control = 0.5,
      total_sample_size = 20,
      no_of_sim = 100,
      alternative = "greater",
-     prior_p_control = beta(1,1),
-     prior_log_odds_ratio = normal(0,1)) |> 
+     prior_p_control = beta_distn(1,1),
+     prior_log_odds_ratio = normal_distn(0,1)) |> 
   simulate_joint(no_of_sim = 1000)
 }

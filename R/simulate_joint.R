@@ -39,8 +39,8 @@ simulate_joint <- function(input, no_of_sim = 1000) {
 #'      total_sample_size = 20,
 #'      no_of_sim = 100,
 #'      alternative = "greater",
-#'      prior_p_control = beta(1,1),
-#'      prior_log_odds_ratio = normal(0,1)) |> 
+#'      prior_p_control = beta_distn(1,1),
+#'      prior_log_odds_ratio = normal_distn(0,1)) |> 
 #'   simulate_joint(no_of_sim = 1000)
 #' @export
 #' 
@@ -52,8 +52,8 @@ simulate_joint_ <- function(p_control = 0.5,
                             randomisation_ratio = 1,
                             no_of_sim = 100,
                             alternative = "greater",
-                            prior_p_control = beta_prior(1,1),
-                            prior_log_odds_ratio = normal_prior(0,1),
+                            prior_p_control = beta_distn(1,1),
+                            prior_log_odds_ratio = normal_distn(0,1),
                             n_iter = 1e3,
                             n_burnin = 3e1,
                             n_thin = 2e1) {
