@@ -5,10 +5,10 @@ data {
   int<lower=0> narms;
   int<lower=0> N[narms];
   int z[nsim, narms];
-  real a;
-  real b;
-  real mu;
-  real sigma;
+  real a;              //beta parameter of control prob
+  real b;              //beta parameter of control prob
+  real mu;             // mean log-odds ratio
+  real sigma;          // sd log-odds ratio
 }
 
 parameters {
